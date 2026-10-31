@@ -1,0 +1,46 @@
+{
+    "specific_version": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "aws-sam-cli": {
+                "version": "1.100.0"
+            }
+        }
+    },
+    "debian": {
+        "image": "debian:12",
+        "features": {
+            "aws-sam-cli": {}
+        }
+    },
+    "ubuntu": {
+        "image": "ubuntu:jammy",
+        "features": {
+            "aws-sam-cli": {}
+        }
+    },
+    "fedora": {
+        "image": "fedora:latest",
+        "features": {
+            "aws-sam-cli": {}
+        }
+    },
+    "alpine": {
+        "image": "alpine:latest",
+        "features": {
+            "ghcr.io/devcontainers/features/common-utils:2": {
+                "installZsh": false,
+                "installOhMyZsh": false,
+                "upgradePackages": false
+            },
+            "aws-sam-cli": {}
+        }
+    },
+    "with_aws_cli": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "ghcr.io/devcontainers/features/aws-cli:1": {},
+            "aws-sam-cli": {}
+        }
+    }
+}
