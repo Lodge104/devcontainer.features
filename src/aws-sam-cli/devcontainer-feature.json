@@ -1,6 +1,6 @@
 {
     "id": "aws-sam-cli",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "name": "AWS SAM CLI",
     "description": "Installs the AWS Serverless Application Model (SAM) CLI. Detects the OS, CPU architecture and package manager and picks the right install method.",
     "documentationURL": "https://github.com/Lodge104/devcontainer.features/tree/main/src/aws-sam-cli",
