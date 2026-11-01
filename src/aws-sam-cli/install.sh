@@ -209,7 +209,17 @@ install_from_pip() {
 # Installs cfn-lint into its own venv so it does not conflict with SAM CLI's dependencies.
 install_cfn_lint() {
     echo "Installing cfn-lint..."
-    if ! command -v python3 > /dev/null 2>&1 || ! python3 -m venv --help > /dev/null 2>&1; then
+    local venv_check_dir
+    local venv_ready="false"
+    if command -v python3 > /dev/null 2>&1; then
+        venv_check_dir="$(mktemp -d)"
+        if python3 -m venv "${venv_check_dir}/venv" > /dev/null 2>&1; then
+            venv_ready="true"
+        fi
+        rm -rf "${venv_check_dir}"
+    fi
+
+    if [ "${venv_ready}" != "true" ]; then
         case "${PKG_MANAGER}" in
             apk) pkg_install python3 py3-pip ;;
             apt-get) pkg_install python3 python3-venv python3-pip ;;
