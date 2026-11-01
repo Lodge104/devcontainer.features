@@ -10,6 +10,8 @@
 set -e
 
 SAM_VERSION="${VERSION:-"latest"}"
+INSTALL_CFN_LINT="${INSTALLCFNLINT:-"true"}"
+CFN_LINT_VENV="/usr/local/cfn-lint-venv"
 
 INSTALL_DIR="/usr/local/aws-sam-cli"
 BIN_DIR="/usr/local/bin"
@@ -204,6 +206,23 @@ install_from_pip() {
     ln -sf "${PIP_INSTALL_DIR}/bin/sam" "${BIN_DIR}/sam"
 }
 
+# Installs cfn-lint into its own venv so it does not conflict with SAM CLI's dependencies.
+install_cfn_lint() {
+    echo "Installing cfn-lint..."
+    if ! command -v python3 > /dev/null 2>&1 || ! python3 -m venv --help > /dev/null 2>&1; then
+        case "${PKG_MANAGER}" in
+            apk) pkg_install python3 py3-pip ;;
+            apt-get) pkg_install python3 python3-venv python3-pip ;;
+            *)   pkg_install python3 ;;
+        esac
+    fi
+
+    python3 -m venv "${CFN_LINT_VENV}"
+    "${CFN_LINT_VENV}/bin/pip" install --no-cache-dir --upgrade pip
+    "${CFN_LINT_VENV}/bin/pip" install --no-cache-dir --upgrade cfn-lint
+    ln -sf "${CFN_LINT_VENV}/bin/cfn-lint" "${BIN_DIR}/cfn-lint"
+}
+
 # --- Main --------------------------------------------------------------------------------------------------
 
 OS="$(detect_os)"
@@ -216,9 +235,16 @@ else
     install_from_zip "${ARCH}"
 fi
 
+if [ "${INSTALL_CFN_LINT}" = "true" ]; then
+    install_cfn_lint
+fi
+
 pkg_cleanup
 
 echo "Verifying installation..."
 sam --version
+if [ "${INSTALL_CFN_LINT}" = "true" ]; then
+    cfn-lint --version
+fi
 
 echo "Done!"

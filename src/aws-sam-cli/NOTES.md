@@ -17,3 +17,7 @@ These commands need access to a Docker daemon. Add either the `docker-in-docker`
 ## Verification
 
 The official zip is downloaded over HTTPS from the `aws/aws-sam-cli` GitHub releases. GPG signature verification is not performed by the feature.
+
+## cfn-lint
+
+By default (`installCfnLint: true`) the feature also installs [`cfn-lint`](https://github.com/aws-cloudformation/cfn-lint) from PyPI into an isolated virtual env at `/usr/local/cfn-lint-venv` and links it into `/usr/local/bin`. Set `installCfnLint` to `false` to skip it.

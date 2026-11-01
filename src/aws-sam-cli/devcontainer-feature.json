@@ -12,6 +12,11 @@
             ],
             "default": "latest",
             "description": "Select the AWS SAM CLI version to install (e.g. 'latest' or '1.100.0')."
+        },
+        "installCfnLint": {
+            "type": "boolean",
+            "default": true,
+            "description": "Also install the cfn-lint CloudFormation linter."
         }
     },
     "customizations": {
